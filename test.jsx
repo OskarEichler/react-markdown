@@ -1216,34 +1216,34 @@ test('MarkdownHooks', async function (t) {
     assert.equal(result.container.innerHTML, '<p>b</p>')
   })
 
-  await t.test('should not reapply transforms to cached trees', async function () {
-    function urlTransform(url) {
-      return '/proxy' + url
-    }
+  await t.test(
+    'should not reapply transforms to cached trees',
+    async function () {
+      function urlTransform(url) {
+        return '/proxy' + url
+      }
 
-    const result = render(
-      <MarkdownHooks
-        children={'[a](/a)'}
-        urlTransform={urlTransform}
-      />
-    )
+      const result = render(
+        <MarkdownHooks children={'[a](/a)'} urlTransform={urlTransform} />
+      )
 
-    await waitFor(function () {
+      await waitFor(function () {
+        assert.equal(
+          result.container.innerHTML,
+          '<p><a href="/proxy/a">a</a></p>'
+        )
+      })
+
+      result.rerender(
+        <MarkdownHooks children={'[a](/a)'} urlTransform={urlTransform} />
+      )
+
       assert.equal(
         result.container.innerHTML,
         '<p><a href="/proxy/a">a</a></p>'
       )
-    })
-
-    result.rerender(
-      <MarkdownHooks
-        children={'[a](/a)'}
-        urlTransform={urlTransform}
-      />
-    )
-
-    assert.equal(result.container.innerHTML, '<p><a href="/proxy/a">a</a></p>')
-  })
+    }
+  )
 })
 
 /**
