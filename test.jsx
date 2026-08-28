@@ -1219,6 +1219,10 @@ test('MarkdownHooks', async function (t) {
   await t.test(
     'should not reapply transforms to cached trees',
     async function () {
+      /**
+       * @param {string} url
+       * @returns {string}
+       */
       function urlTransform(url) {
         return '/proxy' + url
       }
